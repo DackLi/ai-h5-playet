@@ -1,0 +1,492 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start: 15, 15, 20;
+  --background-end: 10, 10, 15;
+  --accent: 229, 62, 62;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(180deg, rgb(var(--background-start)), rgb(var(--background-end)));
+  background-attachment: fixed;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* 自定义滚动条 - BeiDou 风格 */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* 安全区域 */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* 视频播放器容器 */
+.video-container {
+  position: relative;
+  width: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ========== 详情页布局 ========== */
+
+/* 详情页外层容器 */
+.detail-main-wrapper {
+  padding-bottom: 2rem;
+}
+
+/* PC端：左右布局，高度占满视口剩余空间 */
+/* Header 高度：sm:h-16 = 64px；面包屑区域 pt-4 + pb-2 + 行高 ≈ 44px */
+@media (min-width: 1024px) {
+  .detail-main-wrapper {
+    padding-bottom: 0;
+  }
+  .detail-layout {
+    /* 视口高度 - Header(64px) - 面包屑(44px) - 外层水平padding不影响高度 */
+    height: calc(100vh - 64px - 44px);
+    min-height: 500px; /* 最小高度兜底，防止极端小窗口 */
+    overflow: hidden; /* 防止内容溢出 */
+  }
+}
+
+/* 左侧：播放器列 — 自适应宽度 */
+@media (min-width: 1024px) {
+  .detail-player-col {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+  }
+}
+
+/* 播放器容器 */
+.detail-player-container {
+  margin: 0 auto !important;
+}
+
+/* 播放器内层 — 默认 9:16 竖屏比例 */
+.detail-player-inner {
+  aspect-ratio: 9 / 16;
+  position: relative;
+  width: 100%;
+}
+
+/* PC端：高度固定、宽度由 9:16 比例自动推导，水平居中 */
+@media (min-width: 1024px) {
+  .detail-player-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  .detail-player-inner {
+    height: 100%;
+    width: auto;        /* 宽度由 aspect-ratio 自动推导：height × 9/16 */
+    aspect-ratio: 9 / 16;
+    max-width: 100%;    /* 不超出容器宽度 */
+  }
+}
+
+/* 移动端：宽度优先，aspect-ratio 控制高度；用 max-width 代替 max-height 防拉伸 */
+@media (max-width: 1023px) {
+  .detail-player-container {
+    /* 当自然高度（width × 16/9）超过 80vh 时，宽度被压缩到 80vh × 9/16，
+       确保高度始终 ≤ 80vh 且比例不变 */
+    max-width: min(100%, calc(80vh * 9 / 16));
+  }
+  .detail-player-inner {
+    width: 100%;
+    /* aspect-ratio: 9/16 已在基础规则中设定，无需重复 */
+  }
+}
+
+/* 右侧：信息列 — PC端固定500px */
+@media (min-width: 1024px) {
+  .detail-info-col {
+    width: 500px;
+    flex-shrink: 0;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
+  }
+  .detail-info-col::-webkit-scrollbar {
+    width: 4px;
+  }
+  .detail-info-col::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .detail-info-col::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+  }
+}
+
+/* ========== 西瓜播放器样式覆盖 ========== */
+
+/* 播放器外层容器：填满父容器 */
+.xg-player-wrapper {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+/* 播放器根元素：填满外层容器 */
+.xg-player-wrapper > .xgplayer {
+  width: 100% !important;
+  height: 100% !important;
+  background: #000 !important;
+}
+
+/* 流式布局模式下，xgplayer 使用 padding-top 实现宽高比
+   这里覆盖为填满父容器 */
+.xg-player-wrapper > .xgplayer.xgplayer-is-fluid {
+  padding-top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 播放器内的 video 元素 */
+.xg-player-wrapper .xgplayer video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+
+/* 控制栏：半透明深色背景 */
+.xg-player-wrapper .xgplayer .xgplayer-controls {
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7)) !important;
+}
+
+/* 中央播放按钮 */
+.xg-player-wrapper .xgplayer .xgplayer-start {
+  border: none !important;
+  background: rgba(204, 34, 41, 0.85) !important;
+  border-radius: 50% !important;
+  width: 56px !important;
+  height: 56px !important;
+  backdrop-filter: blur(4px);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.xg-player-wrapper .xgplayer .xgplayer-start:hover {
+  background: rgba(204, 34, 41, 1) !important;
+  transform: scale(1.08);
+}
+
+.xg-player-wrapper .xgplayer .xgplayer-start svg {
+  fill: #fff !important;
+}
+
+/* 封面图 */
+.xg-player-wrapper .xgplayer .xgplayer-poster {
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+/* 加载动画 */
+.xg-player-wrapper .xgplayer .xgplayer-loading .xgplayer-loading-svg {
+  fill: #cc2229 !important;
+}
+
+/* 重播按钮 */
+.xg-player-wrapper .xgplayer .xgplayer-replay {
+  color: #fff !important;
+}
+
+.xg-player-wrapper .xgplayer .xgplayer-replay .xgplayer-replay-svg {
+  fill: #cc2229 !important;
+}
+
+/* 进度条 - 已播放 */
+.xg-player-wrapper .xgplayer .xgplayer-progress-played {
+  background: #cc2229 !important;
+}
+
+/* 进度条 - 缓冲 */
+.xg-player-wrapper .xgplayer .xgplayer-progress-cache {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 进度条 - 背景 */
+.xg-player-wrapper .xgplayer .xgplayer-progress-outer {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 进度条拖拽点 */
+.xg-player-wrapper .xgplayer .xgplayer-progress-point {
+  background: #cc2229 !important;
+  border-color: #fff !important;
+}
+
+/* 音量条 - 背景 */
+.xg-player-wrapper .xgplayer .xgplayer-volume-bar .xgplayer-bar {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 音量条 - 当前值 */
+.xg-player-wrapper .xgplayer .xgplayer-volume-bar .xgplayer-curbar {
+  background: #cc2229 !important;
+}
+
+/* 时间文字 */
+.xg-player-wrapper .xgplayer .xgplayer-time {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 12px !important;
+}
+
+/* 提示气泡 */
+.xg-player-wrapper .xgplayer .xg-tips {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-radius: 6px !important;
+  font-size: 12px !important;
+}
+
+/* 错误提示 */
+.xg-player-wrapper .xgplayer .xgplayer-error {
+  background: rgba(0, 0, 0, 0.85) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* ---- 移动端适配 ---- */
+@media (max-width: 1023px) {
+  .xg-player-wrapper .xgplayer .xgplayer-start {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  /* 移动端控制栏增大触摸区域 */
+  .xg-player-wrapper .xgplayer .xgplayer-controls {
+    padding-bottom: 2px !important;
+  }
+
+  .xg-player-wrapper .xgplayer .xgplayer-progress {
+    height: 24px !important;
+  }
+}
+
+/* ========== 西瓜播放器样式覆盖结束 ========== */
+
+/* 横向滚动容器 */
+.scroll-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* 文本截断 */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.5s ease-out;
+}
+
+/* 卡片悬浮发光效果 */
+.card-glow {
+  transition: all 0.3s ease;
+}
+
+.card-glow:hover {
+  box-shadow: 0 8px 30px rgba(229, 62, 62, 0.15);
+  transform: translateY(-4px);
+}
+
+/* 横幅渐变遮罩 - BeiDou 风格 */
+.banner-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(10, 10, 15, 0.95) 0%,
+    rgba(10, 10, 15, 0.7) 30%,
+    rgba(10, 10, 15, 0.3) 60%,
+    transparent 100%
+  );
+}
+
+.banner-overlay-bottom {
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 15, 1) 0%,
+    rgba(10, 10, 15, 0.5) 50%,
+    transparent 100%
+  );
+}
+
+/* 标签胶囊样式 */
+.tag-pill {
+  @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 移动端底部导航间距 */
+@media (max-width: 767px) {
+  .main-content {
+    padding-bottom: 4rem;
+  }
+}
+
+/* 播放按钮脉冲动画 */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.play-btn-pulse::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: rgba(229, 62, 62, 0.4);
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* ========== 付费弹窗 ========== */
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.payment-modal {
+  animation: modalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 移动端：付费弹窗底部全宽展示 */
+@media (max-width: 480px) {
+  .payment-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    border-radius: 1.25rem 1.25rem 0 0;
+    animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}

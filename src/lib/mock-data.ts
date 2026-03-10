@@ -1,0 +1,253 @@
+/**
+ * Mock 数据（调试/兜底用）
+ * 数据结构完全对齐真实 API（beesads）返回格式
+ * 当真实 API 无数据或请求失败时，自动使用 mock 数据
+ */
+
+import { Playlet, Episode } from '@/types';
+
+// ============ 公开测试视频源（m3u8 格式） ============
+const hlsVideos = [
+  'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+  'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8',
+  'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
+  'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+  'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+  'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+];
+
+// ============ 封面图（使用 picsum 随机图片） ============
+const covers = [
+  'https://picsum.photos/seed/drama1/400/711',
+  'https://picsum.photos/seed/drama2/400/711',
+  'https://picsum.photos/seed/drama3/400/711',
+  'https://picsum.photos/seed/drama4/400/711',
+  'https://picsum.photos/seed/drama5/400/711',
+  'https://picsum.photos/seed/drama6/400/711',
+  'https://picsum.photos/seed/drama7/400/711',
+  'https://picsum.photos/seed/drama8/400/711',
+  'https://picsum.photos/seed/drama9/400/711',
+  'https://picsum.photos/seed/drama10/400/711',
+  'https://picsum.photos/seed/drama11/400/711',
+  'https://picsum.photos/seed/drama12/400/711',
+];
+
+/**
+ * 生成指定数量的剧集 mock 数据
+ */
+function generateMockEpisodes(videoId: string, count: number): Episode[] {
+  return Array.from({ length: count }, (_, i) => ({
+    id: `mock-ep-${videoId}-${i + 1}`,
+    video_id: videoId,
+    episode_id: `mock-episode-id-${videoId}-${i + 1}`,
+    episode_code: `VD_MOCK_${String(i + 1).padStart(4, '0')}`,
+    episode_index: i + 1,
+    file_path: hlsVideos[i % hlsVideos.length],
+  }));
+}
+
+/**
+ * Mock 短剧列表数据
+ * 字段完全对齐 Playlet 接口定义
+ */
+export const mockPlaylets: Playlet[] = [
+  {
+    id: 'mock-001',
+    video_id: 'mock-vid-001',
+    lan: 'EN',
+    name: "The Tycoon's Secret Love",
+    cover_image: covers[0],
+    source: 'mock',
+    category: [15, 34],
+    status: 1,
+    episode_size: 65,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "On her engagement day, Claire catches her fiancé David with another woman. Betrayed and homeless, she drowns her sorrows at a bar — ending up in CEO Lucas Fletcher's bed. When Lucas becomes her hotel's new owner, their fling turns complicated: she's pregnant, he's protective.",
+    highlight: 1,
+    episodes: generateMockEpisodes('mock-vid-001', 65),
+  },
+  {
+    id: 'mock-002',
+    video_id: 'mock-vid-002',
+    lan: 'EN',
+    name: 'Back to the Quarterback',
+    cover_image: covers[1],
+    source: 'mock',
+    category: [15, 49],
+    status: 1,
+    episode_size: 66,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "Nine years ago, a high school love between quarterback Logan Carter and Hannah Reid was shattered at a wild party. Now, Logan is an NFL star, while Hannah works as a therapy assistant for his new team, hiding in plain sight.",
+    highlight: 1,
+    episodes: generateMockEpisodes('mock-vid-002', 66),
+  },
+  {
+    id: 'mock-003',
+    video_id: 'mock-vid-003',
+    lan: 'EN',
+    name: 'My Classmate Is My Grandson',
+    cover_image: covers[2],
+    source: 'mock',
+    category: [275, 287],
+    status: 1,
+    episode_size: 65,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "Vivian Carter was a brilliant scientist. Seventy years later, Vivian wakes up in 2025 — inside the body of an eighteen-year-old girl. Her once little boy is now an old man… and she even has great-grandkids!",
+    highlight: 0,
+    episodes: generateMockEpisodes('mock-vid-003', 65),
+  },
+  {
+    id: 'mock-004',
+    video_id: 'mock-vid-004',
+    lan: 'EN',
+    name: "Oops! I Married a Billionaire Daddy!",
+    cover_image: covers[3],
+    source: 'mock',
+    category: [15, 34, 275],
+    status: 1,
+    episode_size: 60,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "The poor college student Riley Black, pressured by her mother, accidentally marries Malik Sterling, the hidden CEO of the Warwick Group, in a whirlwind romance.",
+    highlight: 1,
+    episodes: generateMockEpisodes('mock-vid-004', 60),
+  },
+  {
+    id: 'mock-005',
+    video_id: 'mock-vid-005',
+    lan: 'EN',
+    name: "You Messed with the CEO's Wife",
+    cover_image: covers[4],
+    source: 'mock',
+    category: [49, 287],
+    status: 1,
+    episode_size: 64,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "Danielle Harper, the art class teacher, is a snobbish and money-obsessed woman. Little does she know, Victoria's husband is the real Nathaniel Whitmore — her conceited actions are nothing but a huge joke.",
+    highlight: 0,
+    episodes: generateMockEpisodes('mock-vid-005', 64),
+  },
+  {
+    id: 'mock-006',
+    video_id: 'mock-vid-006',
+    lan: 'EN',
+    name: "Bound to President's Heart",
+    cover_image: covers[5],
+    source: 'mock',
+    category: [15, 34],
+    status: 1,
+    episode_size: 60,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "Forced by her stepmother to marry Blake, a top general under the US President, Jessie intended to get a divorce. However, she accidentally formed a life-or-death bond with the President.",
+    highlight: 0,
+    episodes: generateMockEpisodes('mock-vid-006', 60),
+  },
+  {
+    id: 'mock-007',
+    video_id: 'mock-vid-007',
+    lan: 'EN',
+    name: 'Nanny and Billionaire: My 50-Year-Old Romance',
+    cover_image: covers[6],
+    source: 'mock',
+    category: [275, 49],
+    status: 1,
+    episode_size: 65,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "Twenty-five years ago, Jennifer's husband John vanished. Now over 50, a kind deed got her a live-in nanny job with Titan Corporation's chairman Jeff. After nursing Jeff back to health, he fell for her.",
+    highlight: 1,
+    episodes: generateMockEpisodes('mock-vid-007', 65),
+  },
+  {
+    id: 'mock-008',
+    video_id: 'mock-vid-008',
+    lan: 'EN',
+    name: 'The Grand Princess Strikes Back',
+    cover_image: covers[7],
+    source: 'mock',
+    category: [287, 34],
+    status: 1,
+    episode_size: 75,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "Lucy Stone, the Grand Princess of the Montvale Kingdom, concealed her identity to treat the illness of Jesse Taylor. Upon ascending to power, Prince Jesse demoted her to concubine.",
+    highlight: 0,
+    episodes: generateMockEpisodes('mock-vid-008', 75),
+  },
+  {
+    id: 'mock-009',
+    video_id: 'mock-vid-009',
+    lan: 'EN',
+    name: 'When Fate Forgets to Lie',
+    cover_image: covers[8],
+    source: 'mock',
+    category: [15, 275],
+    status: 1,
+    episode_size: 50,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "Ivy takes her daughter to the hospital — only to face her ex-boyfriend as the attending doctor. Seven years apart, she's reinvented herself: new name, slimmer figure.",
+    highlight: 0,
+    episodes: generateMockEpisodes('mock-vid-009', 50),
+  },
+  {
+    id: 'mock-010',
+    video_id: 'mock-vid-010',
+    lan: 'EN',
+    name: 'Wrapped the Playboy Around My Finger',
+    cover_image: covers[9],
+    source: 'mock',
+    category: [34, 49],
+    status: 1,
+    episode_size: 40,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "Julie Lane, determined to take back her mother's company, sheds her identity as a mysterious assassin and slips into the guise of a fragile, icy little damsel.",
+    highlight: 0,
+    episodes: generateMockEpisodes('mock-vid-010', 40),
+  },
+  {
+    id: 'mock-011',
+    video_id: 'mock-vid-011',
+    lan: 'EN',
+    name: "The Emperor's Stolen Heart",
+    cover_image: covers[10],
+    source: 'mock',
+    category: [287, 275],
+    status: 1,
+    episode_size: 95,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "Elara Mayne witnessed Consort Seraphine slay her beloved sister, and she swore revenge. Her path was unconventional — rather than striking with a blade, she would steal everything Seraphine held dear.",
+    highlight: 1,
+    episodes: generateMockEpisodes('mock-vid-011', 95),
+  },
+  {
+    id: 'mock-012',
+    video_id: 'mock-vid-012',
+    lan: 'EN',
+    name: 'Five Years Behind Bars, My Family Begs',
+    cover_image: covers[11],
+    source: 'mock',
+    category: [49, 275, 34],
+    status: 1,
+    episode_size: 110,
+    resource_status: 'owned_video',
+    resource_type: 'drama',
+    summary: "After five years in prison for a crime he didn't commit, he returns to find everything has changed. Those who betrayed him will pay the ultimate price.",
+    highlight: 0,
+    episodes: generateMockEpisodes('mock-vid-012', 110),
+  },
+];
+
+/**
+ * 获取 mock 短剧列表
+ */
+export function getMockPlaylets(): Playlet[] {
+  return mockPlaylets;
+}

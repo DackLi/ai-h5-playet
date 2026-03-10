@@ -1,0 +1,104 @@
+// 支持的语言类型
+export type Locale = 'en' | 'ja' | 'es';
+
+export interface Translations {
+  // 头部导航
+  siteName: string;
+  home: string;
+  browse: string;
+  search: string;
+  searchPlaceholder: string;
+  // 首页
+  trending: string;
+  hotPicks: string;
+  newReleases: string;
+  recommended: string;
+  watchNow: string;
+  play: string;
+  more: string;
+  allEpisodes: string;
+  episodes: string;
+  ep: string;
+  // 分类
+  all: string;
+  sweet: string;
+  revenge: string;
+  timeTravel: string;
+  urban: string;
+  historical: string;
+  suspense: string;
+  comedy: string;
+  // 列表页
+  allShows: string;
+  totalShows: string;
+  searchResultsFor: string;
+  noResults: string;
+  foundResults: string;
+  // 详情页
+  nowPlaying: string;
+  selectEpisode: string;
+  expand: string;
+  collapse: string;
+  completed: string;
+  ongoing: string;
+  totalEp: string;
+  updatedTo: string;
+  views: string;
+  back: string;
+  freeToWatch: string;
+  vipOnly: string;
+  youMayLike: string;
+  showNotFound: string;
+  backToHome: string;
+  selectToPlay: string;
+  videoNotSupported: string;
+  showAll: string;
+  // 底部
+  footerText: string;
+  userAgreement: string;
+  privacyPolicy: string;
+  aboutUs: string;
+  contactUs: string;
+  // 语言
+  language: string;
+  // 加载
+  loading: string;
+  // 付费弹窗
+  paymentRequired: string;
+  paymentDesc: string;
+  unlockEpisode: string;
+  unlockAllEpisodes: string;
+  continueFree: string;
+  currentEp: string;
+  nextEpIsVip: string;
+  autoPlayNext: string;
+  // 详情页 - 剧情简介和分享
+  plotOfEpisode: string;
+  share: string;
+  episodeRangeLabel: string;
+  // 剧集介绍页
+  episodeList: string;
+  findYourGem: string;
+  synopsis: string;
+  startWatching: string;
+  continueWatching: string;
+  seoMovieTitle: string;
+  seoMovieDesc: string;
+  // SEO 相关
+  seoHomeTitle: string;
+  seoHomeDesc: string;
+  seoHomeKeywords: string;
+  seoListTitle: string;
+  seoListDesc: string;
+  seoListKeywords: string;
+  seoDetailTitle: string;
+  seoDetailDesc: string;
+  seoSearchTitle: string;
+}
+
+// 语言选项
+export interface LocaleOption {
+  code: Locale;
+  label: string;
+  nativeLabel: string;
+}
