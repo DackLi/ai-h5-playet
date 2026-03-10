@@ -149,21 +149,25 @@ SiteEnvMap { siteId, hostname, theme, zoneMap, sdkSiteConfig }
 SiteTheme { icon, logo, header-bg, header-color, footer-bg, footer-color, theme-color }
 ZoneMap { [key: string]: string }
 isEpisodeFree(episodeIndex): boolean // 目前全部返回 true
+```
+---
 
 ## 广告系统
+
 BeesAds SDK：从 window.APP_PROPS 读取 siteId + zoneMap
 <AdsTag>：往 <head> 注入 <script data-site-id>
 <Ads zone_key="">：渲染广告占位 DOM，注册到 adsMap
 useAdsInit Hook：初始化穿插广告、锚定广告、内嵌广告
 广告类型：穿插(interstitial)、锚定(anchor)、内嵌(banner)
 
+---
 ## 环境变量
 NEXT_PUBLIC_API_BASE_URL=https://video.beesads.com
 NEXT_PUBLIC_ENV=production|development
 NEXT_PUBLIC_ADS_TAG_URL=https://sdk.beesads.com/v1/ads-tag.js
 NEXT_PUBLIC_ADS_SITE_ID=
 GAMEBRIDGE_API_URL=https://service.gamebridge.games/gamebridge/v1
-
+---
 ## 颜色风格
 纯深黑背景：bg-[#0a0a0f]
 卡片/面板：bg-white/[0.04] border border-white/[0.08]
@@ -171,9 +175,8 @@ GAMEBRIDGE_API_URL=https://service.gamebridge.games/gamebridge/v1
 强调色：text-red-400、bg-red-500/red-600
 页脚/导航背景：bg-[#0a0a0f] border-t border-white/5
 
-
+---
 ##  部署
-
 next.config.mjs: output: 'standalone', images.unoptimized: true
 Docker 容器化，健康检查地址 /health
 构建脚本：build:prod（cross-env NEXT_PUBLIC_ENV=production）
